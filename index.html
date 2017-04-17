@@ -1,14 +1,55 @@
 <!doctype html>
 <html>
 <head>
+<title>GameDesigner</title>
 <style>
-
+body {
+  background-color: #e0f4fc;
+  font-family: Helvetica, Arial, Verdana, "Trebuchet MS", sans-serif;
+  padding: 0 10%;
+}
+div.paragraph,
+p {
+  background-color: #B1E3FA;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+a {
+  color: #1e86be;
+}
+a.download {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #29AAE2;
+  color: white;
+  text-align: center;
+  border-radius: 10px;
+  text-decoration: none
+}
+a:hover {
+  text-decoration: underline
+}
+a .deemphasis {
+  font-size: small;
+  opacity: 0.5;
+}
 </style>
 </head>
 <body>
-  <h1>Game Designer</h1>
-  <p>Game Designer is a simple windows application designed to teach programming basics via visual coding blocks (similar to Scratch! and Hour of Code). It loads levels and worlds built with the Tiled map editor and allows the user to make them interactive via dragging-and-dropping code blocks.</p>
+  <img src="logo.png" title="Game Designer Logo">
+  <p>Game Designer is an <a href="https://github.com/prust/game-designer/blob/master/LICENSE">open-source</a> windows application built on the <a href="https://love2d.org/">LÖVE framework</a> designed to teach programming basics via visual coding blocks (similar to Scratch! and Hour of Code). It loads levels and worlds built with the <a href="http://www.mapeditor.org/">Tiled</a> map editor and allows the user to make them interactive via dragging-and-dropping code blocks.</p>
 
-  <a href="/GameDesignerSetup.exe">Download Windows Installer</a>
+  <p>You can <a href="https://github.com/prust/game-designer">view the source on github</a>. It is a work in progress and currently only supports the Liberated Pixel Cup tilesets found here: <a href="https://prust.github.io/tilesets/">https://prust.github.io/tilesets/</a>. If you have questions, you can <a href="https://github.com/prust/game-designer/issues/new">post them on github</a> or you can email the author, Peter Rust at <a href="mailto:peter@peterandjessica.com">peter@peterandjessica.com</a>.</p>
+
+  <div class="paragraph">
+    Credits:
+    <ul>
+      <li>Viktor Vorobyev: the tools icon</li>
+      <li><a href="https://love2d.org/">LÖVE</a>: framework and icon colors</li>
+    </ul>
+  </div>
+
+  <a href="/GameDesignerSetup.exe" class="download">Download GameDesigner<br><span class="deemphasis">Windows Installer</span></a>
 </body>
 </html>
