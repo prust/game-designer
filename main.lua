@@ -5,7 +5,7 @@ local update_status = ''
 local is_loading = true
 local num_load_steps = 2
 local curr_load_step = 0
-local ver = '0.10'
+local ver = '0.11'
 local load_time
 
 function hex(hex_str)
