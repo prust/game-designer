@@ -7,7 +7,7 @@ local is_loading = true
 local is_loaded = false
 local num_load_steps = 2
 local curr_load_step = 0
-local ver = '0.1.3'
+local ver = '0.1.4'
 local load_time
 local version
 
