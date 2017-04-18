@@ -1,12 +1,15 @@
 local async = require('async')
+--require('mobdebug').start()
 
 local base_url = 'http://www.unashamedstudio.com/game-designer/'
 local update_status = ''
 local is_loading = true
+local is_loaded = false
 local num_load_steps = 2
 local curr_load_step = 0
-local ver = '0.1.2'
+local ver = '0.1.3'
 local load_time
+local version
 
 function hex(hex_str)
   _,_,r,g,b = hex_str:find('(%x%x)(%x%x)(%x%x)')
@@ -23,16 +26,13 @@ function love.load(args)
   logo_h = logo:getHeight()
 
   if args.updated then
-    update_status = 'Update complete'
-    is_loading = false
-    load_time = love.timer.getTime()
+    is_loaded = true
     return
   end
 
   async.load()
   async.ensure.atLeast(2)
   
-  local version = nil
   local version_request = async.define("version_request", function()
     local http = require("socket.http")
     local base_url = 'http://www.unashamedstudio.com/game-designer/'
@@ -56,25 +56,17 @@ function love.load(args)
         game_request(function(result, status)
           if status == 200 then
             curr_load_step = curr_load_step + 1
-            love.filesystem.write('game_' .. version .. '.love', result)  
-            love.filesystem.mount('game_' .. version .. '.love', '')
-            package.loaded.main = nil
-            package.loaded.conf = nil
-            love.conf = nil
-            love.init()
-            love.load({updated = true})
+            update_status = 'Update complete'
+            love.filesystem.write('game_' .. version .. '.love', result) 
+            is_loading = false
+            load_time = love.timer.getTime()
           end
         end, version)
       else
         curr_load_step = curr_load_step + 1
         update_status = 'No updates found, loading app...'
-
-        love.filesystem.mount('game_' .. version .. '.love', '')
-        package.loaded.main = nil
-        package.loaded.conf = nil
-        love.conf = nil
-        love.init()
-        love.load({updated = true})
+        is_loading = false
+        load_time = love.timer.getTime()
       end
     end
   end)
@@ -82,13 +74,22 @@ end
 
 function love.update(dt)
   async.update()
+  local curr_time = love.timer.getTime()
+  if not is_loaded and not is_loading and curr_time - load_time > 1 then
+    love.filesystem.mount('game_' .. version .. '.love', '')
+    package.loaded.main = nil
+    package.loaded.conf = nil
+    love.conf = nil
+    love.init()
+    love.load({updated = true})
+  end
 end
 
 function love.draw()
   local curr_time = love.timer.getTime()
   local width, height = love.graphics.getDimensions()
 
-  if is_loading or curr_time - load_time < 1 then
+  if not is_loaded and (is_loading or curr_time - load_time < 1) then
     love.graphics.setColor(hex('ffffff'));
     love.graphics.draw(logo, width / 2 - logo_w / 2, height / 2 - logo_h / 2)
 
@@ -97,7 +98,7 @@ function love.draw()
     love.graphics.rectangle('fill', width / 4, height / 2 + 75, bar_w, 20)
 
     local load_pct = curr_load_step / num_load_steps
-    love.graphics.setColor(hex('29AAE2'))
+    love.graphics.setColor(hex('29aae2'))
     love.graphics.rectangle('fill', width / 4, height / 2 + 75, bar_w * load_pct, 20)
 
     love.graphics.setColor(hex('29aae2'))
