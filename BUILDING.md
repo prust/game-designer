@@ -21,3 +21,11 @@ The other is in `NSIS\Contrib\zip2exe\base.nsh`, immediately after `Call zip2exe
 ```
 createShortCut "$SMPROGRAMS\GameDesigner.lnk" "$INSTDIR\GameDesigner.exe" "" "$INSTDIR\GameDesigner.ico"
 ```
+
+Steps to build the installer:
+* Run deploy.sh from the main repo
+* Use Resource Hacker to fix the GameDesigner.exe icon
+* Zip the files in the folder
+* Use NSIS to build an installer
+* Upload the installer to GitHub
+* Update the gh-pages to point to the new installer
