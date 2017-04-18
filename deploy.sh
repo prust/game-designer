@@ -1,9 +1,9 @@
-zip game_0.1.5.love ./* -x .git/\*
+zip game_0.1.6.love ./* -x .git/\*
 
-cat ../love-builder/love.exe game_0.1.5.love > build/GameDesigner.exe
+cat ../love-builder/love.exe game_0.1.6.love > build/GameDesigner.exe
 cp build/* ~/Downloads/game-designer/
 
-mv game_0.1.5.love ../../Website/game-designer/
+mv game_0.1.6.love ../../Website/game-designer/
 cd ~/Website/
-echo '{version = "0.1.5"}' >game-designer/version.lua
+echo '{version = "0.1.6"}' >game-designer/version.lua
 aws s3 sync . s3://www.unashamedstudio.com --acl public-read --exclude="*.git/*"

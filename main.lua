@@ -1,4 +1,5 @@
 local async = require('async')
+local sti = require('sti')
 --require('mobdebug').start()
 
 local base_url = 'http://www.unashamedstudio.com/game-designer/'
@@ -7,9 +8,11 @@ local is_loading = true
 local is_loaded = false
 local num_load_steps = 2
 local curr_load_step = 0
-local ver = '0.1.5'
+local ver = '0.1.6'
 local load_time
 local version
+
+local map
 
 function hex(hex_str)
   _,_,r,g,b = hex_str:find('(%x%x)(%x%x)(%x%x)')
@@ -84,6 +87,8 @@ function love.update(dt)
     love.conf = nil
     love.init()
     love.load({updated = true})
+  elseif map then
+    map:update()
   end
 end
 
@@ -106,6 +111,9 @@ function love.draw()
     love.graphics.setColor(hex('29aae2'))
     local text_w = font:getWidth(update_status)
     love.graphics.print(update_status, width / 2 - text_w / 2, height / 2 + 50)
+  elseif map then
+    love.graphics.setColor(hex('ffffff'))
+    map:draw()
   else
     local blank_slate = 'Drag and drop your Tiled export file here to begin.'
     
@@ -113,4 +121,32 @@ function love.draw()
     local text_w = font:getWidth(blank_slate)
     love.graphics.print(blank_slate, width / 2 - text_w / 2, height / 2)
   end
+end
+
+function love.filedropped(file)
+    if file:open('r') then
+      local data = file:read()
+      file:close()
+      local level = loadstring(data)()
+      if not level then
+        return
+      end
+
+      local supported = {'terrain_atlas.png', 'build_atlas.png', 'obj_misk_atlas.png', 'people_atlas.png'}
+      for i, tileset in ipairs(level.tilesets) do
+        if tileset.image then
+          for ix, img in ipairs(supported) do
+            if string.ends(tileset.image, img) then
+              tileset.image = 'assets/' .. img
+            end
+          end
+        end
+      end
+
+      map = sti(level, {'bump'})
+  end
+end
+
+function string.ends(str, substr)
+   return substr == '' or string.sub(str, -string.len(substr)) == substr
 end
