@@ -7,7 +7,7 @@ local is_loading = true
 local is_loaded = false
 local num_load_steps = 2
 local curr_load_step = 0
-local ver = '0.1.4'
+local ver = '0.1.5'
 local load_time
 local version
 
@@ -18,6 +18,8 @@ end
 
 function love.load(args)
   love.window.setTitle('GameDesigner ' .. ver)
+  local width, height = love.graphics.getDimensions()
+  love.window.setMode(width, height, {resizable=true, vsync=false, minwidth=400, minheight=300})
   love.graphics.setBackgroundColor(hex('ffffff'))
   font = love.graphics.newFont("OpenSans-Bold.ttf", 15)
   love.graphics.setFont(font)
