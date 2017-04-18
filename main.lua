@@ -8,7 +8,7 @@ local is_loading = true
 local is_loaded = false
 local num_load_steps = 2
 local curr_load_step = 0
-local ver = '0.1.7'
+local ver = '0.1.8'
 local load_time
 local version
 
@@ -132,7 +132,7 @@ function love.filedropped(file)
         return
       end
 
-      local supported = {'terrain_atlas.png', 'build_atlas.png', 'obj_misk_atlas.png', 'people_atlas.png'}
+      local supported = {'terrain_atlas.png', 'build_atlas.png', 'obj_misk_atlas.png', 'people_atlas.png', 'base_out_atlas.png'}
       for i, tileset in ipairs(level.tilesets) do
         if tileset.image then
           for ix, img in ipairs(supported) do
