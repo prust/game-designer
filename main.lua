@@ -8,7 +8,7 @@ local is_loading = true
 local is_loaded = false
 local num_load_steps = 2
 local curr_load_step = 0
-local ver = '0.1.8'
+local ver = '0.1.9'
 local load_time
 local version
 
@@ -144,6 +144,12 @@ function love.filedropped(file)
       end
 
       map = sti(level, {'bump'})
+  end
+end
+
+function love.resize(w, h)
+  if love then
+    map:resize(w, h)
   end
 end
 
